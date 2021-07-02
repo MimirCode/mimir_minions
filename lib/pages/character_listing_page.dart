@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mimir_minions/models/character.dart';
 import 'package:mimir_minions/styleguide.dart';
@@ -62,6 +64,8 @@ class _CharacterListingPageState extends State<CharacterListingPage> {
                     for (var i = 0; i < characters.length; i++)
                       CharacterWidget(
                         character: characters[i],
+                        pageController: _pageController,
+                        currentpage: i,
                       )
                   ],
                 ),

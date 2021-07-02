@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:mimir_minions/models/character.dart';
 import 'package:mimir_minions/pages/character_detail_page.dart';
 import 'package:mimir_minions/styleguide.dart';
 
 class CharacterWidget extends StatelessWidget {
-  const CharacterWidget({Key? key, required this.character}) : super(key: key);
+  const CharacterWidget({
+    Key? key,
+    required this.character,
+    required this.pageController,
+    required this.currentpage,
+  }) : super(key: key);
 
   final Character character;
+  final PageController pageController;
+  final int currentpage;
 
   @override
   Widget build(BuildContext context) {
@@ -20,61 +28,75 @@ class CharacterWidget extends StatelessWidget {
           PageRouteBuilder(
             transitionDuration: Duration(milliseconds: 350),
             pageBuilder: (context, _, __) => CharacterDetailPage(
-              character: characters[0],
+              character: character,
             ),
           ),
         );
       },
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Hero(
-              tag: "background_${characters[0].name}",
-              child: ClipPath(
-                clipper: CharacterCardBackgroundClipper(),
-                child: Container(
-                  height: screenHeight * 0.6,
-                  width: screenWidth * 0.9,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: characters[0].colors,
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
+      child: AnimatedBuilder(
+        animation: pageController,
+        builder: (context, child) {
+          double value = 1.0;
+          if (pageController.position.haveDimensions) {
+            value = (pageController.page! - currentpage);
+            value = (1 - (value.abs() * 0.6)).clamp(0.0, 1.0);
+          }
+
+          return Stack(
+            children: [
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Hero(
+                  tag: "background_${character.name}",
+                  child: ClipPath(
+                    clipper: CharacterCardBackgroundClipper(),
+                    child: Container(
+                      height: screenHeight * 0.6,
+                      width: screenWidth * 0.9,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: character.colors,
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment(0, -0.6),
-            child: Hero(
-              tag: "image_${characters[0].name}",
-              child: Image.asset(
-                characters[0].imagePath,
-                height: screenHeight * 0.55,
+              Align(
+                alignment: Alignment(0, -0.6),
+                child: Hero(
+                  tag: "image_${character.name}",
+                  child: Image.asset(
+                    character.imagePath,
+                    height: screenHeight * 0.55 * value,
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 32, right: 8, bottom: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Hero(
-                    tag: "name_${characters[0].name}",
-                    child: Material(
+              Padding(
+                padding: const EdgeInsets.only(left: 32, right: 8, bottom: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Hero(
+                      tag: "name_${character.name}",
+                      child: Material(
                         color: Colors.transparent,
                         child: Container(
-                            child: Text(characters[0].name,
-                                style: AppTheme.heading)))),
-                Text('Tap to read more', style: AppTheme.subHeading),
-              ],
-            ),
-          )
-        ],
+                          child: Text(character.name, style: AppTheme.heading),
+                        ),
+                      ),
+                    ),
+                    Text('More about ${character.name}',
+                        style: AppTheme.subHeading),
+                  ],
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }

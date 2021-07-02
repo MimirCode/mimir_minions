@@ -7,7 +7,7 @@ class AppTheme {
   static const TextStyle display1 = TextStyle(
     fontFamily: 'WorkSans',
     color: Colors.black,
-    fontSize: 38,
+    fontSize: 40,
     fontWeight: FontWeight.w600,
     letterSpacing: 1.2,
   );
@@ -23,7 +23,7 @@ class AppTheme {
   static const TextStyle heading = TextStyle(
     fontFamily: 'WorkSans',
     fontWeight: FontWeight.w900,
-    fontSize: 34,
+    fontSize: 36,
     color: Colors.white70,
     letterSpacing: 1.2,
   );
@@ -33,6 +33,14 @@ class AppTheme {
     fontFamily: 'WorkSans',
     fontWeight: FontWeight.w500,
     fontSize: 24,
+    color: Colors.white70,
+  );
+
+  static const TextStyle quotes = TextStyle(
+    inherit: true,
+    fontFamily: 'WorkSans',
+    // fontWeight: FontWeight.w500,
+    fontSize: 20,
     color: Colors.white70,
   );
 }

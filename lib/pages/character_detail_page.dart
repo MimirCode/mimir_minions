@@ -28,8 +28,8 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(35),
-                  topRight: Radius.circular(35),
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
                 gradient: LinearGradient(
                   colors: widget.character.colors,
@@ -70,17 +70,49 @@ class _CharacterDetailPageState extends State<CharacterDetailPage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8),
                   child: Hero(
-                      tag: "name_${widget.character.name}",
-                      child: Material(
-                          color: Colors.transparent,
-                          child: Container(
-                              child: Text(widget.character.name,
-                                  style: AppTheme.heading)))),
+                    tag: "name_${widget.character.name}",
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        child: Text(widget.character.name,
+                            style: AppTheme.heading),
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 0, 32.0, 24.0),
-                  child: Text(widget.character.description,
-                      style: AppTheme.subHeading),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: widget.character.famousQoute,
+                            style: AppTheme.quotes),
+                        TextSpan(text: "\n\n"),
+                        TextSpan(
+                            text: widget.character.description,
+                            style: AppTheme.subHeading),
+                        TextSpan(text: "\n\n"),
+                        TextSpan(text: "Appearance", style: AppTheme.display2),
+                        TextSpan(text: "\n"),
+                        TextSpan(
+                            text: widget.character.appearance,
+                            style: AppTheme.subHeading),
+                        TextSpan(text: "\n\n"),
+                        TextSpan(text: "History", style: AppTheme.display2),
+                        TextSpan(text: "\n"),
+                        TextSpan(
+                            text: widget.character.history,
+                            style: AppTheme.subHeading),
+                        TextSpan(text: "\n\n"),
+                        TextSpan(text: "Personality", style: AppTheme.display2),
+                        TextSpan(text: "\n"),
+                        TextSpan(
+                            text: widget.character.personality,
+                            style: AppTheme.subHeading),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
